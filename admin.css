@@ -107,3 +107,126 @@ body {
 
 /* ── Mobile sidebar backdrop fix ── */
 #sidebar { will-change: transform; }
+
+/* ════════════════════════════════════════════
+   LIVE CALENDAR GRID
+═════════════════════════════════════════════ */
+
+/* 4-column grid: time | court1 | court2 | court3 */
+.cal-header-grid,
+.cal-row-grid {
+  display: grid;
+  grid-template-columns: 72px 1fr 1fr 1fr;
+  min-width: 520px; /* ensures horizontal scroll on very small screens */
+}
+
+/* Outer scroll container on mobile */
+#view-calendar .rounded-2xl {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Time label cell */
+.cal-time-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4b6280;
+  letter-spacing: 0.04em;
+  height: 56px;
+  border-right: 1px solid #1e2d45;
+  user-select: none;
+}
+
+/* Generic slot cell */
+.cal-cell {
+  height: 56px;
+  border-left: 1px solid #1e2d45;
+  padding: 6px 8px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.cal-cell:hover {
+  background: rgba(255,255,255,0.04);
+}
+
+/* Status variants */
+.cal-cell.status-available {
+  background: transparent;
+}
+.cal-cell.status-booked {
+  background: linear-gradient(135deg, rgba(0,123,255,0.18) 0%, rgba(0,210,255,0.10) 100%);
+  border-left: 3px solid #007bff;
+}
+.cal-cell.status-booked:hover {
+  background: linear-gradient(135deg, rgba(0,123,255,0.28) 0%, rgba(0,210,255,0.18) 100%);
+}
+.cal-cell.status-pending {
+  background: linear-gradient(135deg, rgba(255,140,0,0.16) 0%, rgba(230,81,0,0.10) 100%);
+  border-left: 3px solid #ff8c00;
+}
+.cal-cell.status-pending:hover {
+  background: linear-gradient(135deg, rgba(255,140,0,0.26) 0%, rgba(230,81,0,0.18) 100%);
+}
+.cal-cell.status-maintenance {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(75,98,128,0.08),
+    rgba(75,98,128,0.08) 4px,
+    transparent 4px,
+    transparent 12px
+  );
+  border-left: 3px dashed #4b6280;
+  cursor: not-allowed;
+}
+
+/* Current-hour row highlight */
+.cal-row-current .cal-time-label {
+  color: #4ade80;
+}
+.cal-row-current .cal-cell.status-available {
+  background: rgba(74,222,128,0.04);
+}
+
+/* Slot label inside cell */
+.cal-slot-label {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.cal-slot-sub {
+  font-size: 10px;
+  opacity: 0.7;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tooltip on hover */
+.cal-cell[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0b0f1a;
+  border: 1px solid #1e2d45;
+  color: #cdd9ea;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 50;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
