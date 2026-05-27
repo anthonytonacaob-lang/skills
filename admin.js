@@ -201,3 +201,207 @@ function showToast(message, isError = false) {
     setTimeout(() => toast.remove(), 300);
   }, 3000);
 }
+
+/* ════════════════════════════════════════════════
+   VIEW SWITCHER — Dashboard ↔ Live Calendar
+═════════════════════════════════════════════════ */
+
+let currentView = 'dashboard';
+
+/**
+ * switchView(view)
+ * Toggles between 'dashboard' and 'calendar' without a page reload.
+ * Updates: panel visibility, sidebar active states, page title.
+ */
+function switchView(view) {
+  currentView = view;
+
+  // Panels
+  const dashPanel = document.getElementById('view-dashboard');
+  const calPanel  = document.getElementById('view-calendar');
+  dashPanel.classList.toggle('hidden', view !== 'dashboard');
+  calPanel.classList.toggle('hidden',  view !== 'calendar');
+
+  // Sidebar nav states
+  const navDash = document.getElementById('nav-dashboard');
+  const navCal  = document.getElementById('nav-calendar');
+  if (navDash) navDash.classList.toggle('active', view === 'dashboard');
+  if (navCal)  navCal.classList.toggle('active',  view === 'calendar');
+
+  // Top bar title
+  const titleEl = document.querySelector('header h1');
+  const subEl   = document.getElementById('current-date');
+  if (view === 'calendar') {
+    if (titleEl) titleEl.textContent = 'Live Calendar';
+    if (subEl)   subEl.textContent   = 'Real-time court availability';
+    renderCalendar();
+    // Auto-close sidebar on mobile after selection
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar && !sidebar.classList.contains('-translate-x-full') && window.innerWidth < 768) {
+      toggleSidebar();
+    }
+  } else {
+    if (titleEl) titleEl.textContent = 'Dashboard';
+    const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    if (subEl) subEl.textContent = new Date().toLocaleDateString('en-PH', opts);
+  }
+}
+
+/* ════════════════════════════════════════════════
+   LIVE CALENDAR LOGIC
+═════════════════════════════════════════════════ */
+
+// Calendar state
+let calDate = new Date(); // currently-displayed date
+const TIME_START = 6;    // 6 AM
+const TIME_END   = 22;   // 10 PM
+
+/**
+ * Mock bookings for the calendar.
+ * Structure: { date (YYYY-MM-DD), court (1|2|3), hour (6-21), status, name, label }
+ * In Phase 4 this gets replaced by an API fetch.
+ */
+function getCalendarMockData(dateStr) {
+  // Seed deterministic "bookings" based on the date string so
+  // different days look naturally varied.
+  const seed = dateStr.split('-').reduce((a, n) => a + parseInt(n), 0);
+  const rand = (n) => (seed * 9301 + 49297 * n) % 233280 / 233280;
+
+  const names = [
+    'Maria Santos', 'Juan D.C.', 'Ana Reyes', 'Carlo B.', 'Liz Torres',
+    'Mark V.', 'Paolo O.', 'Rina C.', 'Dante Lim', 'Gab Santos',
+  ];
+
+  const slots = [];
+  for (let court = 1; court <= 3; court++) {
+    for (let h = TIME_START; h < TIME_END; h++) {
+      const r = rand(court * 100 + h);
+      let status = 'available';
+      let name   = '';
+      if (r < 0.38)       { status = 'booked';      name = names[Math.floor(rand(h + court * 7) * names.length)]; }
+      else if (r < 0.50)  { status = 'pending';     name = names[Math.floor(rand(h + court * 13) * names.length)]; }
+      else if (r < 0.54)  { status = 'maintenance'; name = 'Maintenance'; }
+      slots.push({ court, hour: h, status, name });
+    }
+  }
+  return slots;
+}
+
+function padZero(n) { return n < 10 ? '0' + n : '' + n; }
+
+function hourLabel(h) {
+  const suffix = h < 12 ? 'AM' : 'PM';
+  const disp   = h <= 12 ? h : h - 12;
+  return `${disp}:00 ${suffix}`;
+}
+
+function toDateStr(d) {
+  return `${d.getFullYear()}-${padZero(d.getMonth()+1)}-${padZero(d.getDate())}`;
+}
+
+function calNavDay(delta) {
+  calDate.setDate(calDate.getDate() + delta);
+  renderCalendar();
+}
+function calNavToday() {
+  calDate = new Date();
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const dateStr  = toDateStr(calDate);
+  const nowHour  = new Date().getHours();
+  const isToday  = toDateStr(new Date()) === dateStr;
+
+  // Update date label
+  const calLabel = document.getElementById('cal-date-label');
+  if (calLabel) {
+    const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    calLabel.textContent = calDate.toLocaleDateString('en-PH', opts);
+  }
+
+  const slots = getCalendarMockData(dateStr);
+
+  // Group by hour
+  const byHour = {};
+  for (let h = TIME_START; h < TIME_END; h++) byHour[h] = {};
+  slots.forEach(s => { byHour[s.hour][s.court] = s; });
+
+  // Build grid rows
+  const gridBody = document.getElementById('cal-grid-body');
+  if (!gridBody) return;
+
+  let bookedCount = 0, pendingCount = 0, availCount = 0;
+
+  gridBody.innerHTML = '';
+  for (let h = TIME_START; h < TIME_END; h++) {
+    const isCurrentHour = isToday && h === nowHour;
+    const rowDiv = document.createElement('div');
+    rowDiv.className = `cal-row-grid${isCurrentHour ? ' cal-row-current' : ''}`;
+
+    // Time cell
+    const timeCell = document.createElement('div');
+    timeCell.className = 'cal-time-label';
+    timeCell.innerHTML = isCurrentHour
+      ? `<span class="text-green-400 flex items-center gap-1">
+           <span class="w-1.5 h-1.5 rounded-full bg-green-400 inline-block animate-pulse"></span>
+           ${hourLabel(h)}
+         </span>`
+      : hourLabel(h);
+    rowDiv.appendChild(timeCell);
+
+    // Court cells 1-3
+    for (let court = 1; court <= 3; court++) {
+      const slot   = byHour[h][court] || { status: 'available', name: '' };
+      const cell   = document.createElement('div');
+      cell.className = `cal-cell status-${slot.status}`;
+
+      if (slot.status === 'available') {
+        cell.setAttribute('data-tip', `Book ${hourLabel(h)} · Court ${court}`);
+        cell.innerHTML = `<span class="text-brand-muted text-[10px] opacity-40 select-none">—</span>`;
+        availCount++;
+        cell.addEventListener('click', () => handleSlotClick(court, h, dateStr));
+      } else if (slot.status === 'maintenance') {
+        cell.setAttribute('data-tip', 'Under maintenance');
+        cell.innerHTML = `
+          <div class="cal-slot-label text-brand-muted">🔧 Maintenance</div>`;
+      } else {
+        const isBooked = slot.status === 'booked';
+        const labelColor = isBooked ? '#00d2ff' : '#ff8c00';
+        cell.setAttribute('data-tip', `${slot.name} · ${hourLabel(h)}`);
+        cell.innerHTML = `
+          <div class="cal-slot-label" style="color:${labelColor}">${slot.name}</div>
+          <div class="cal-slot-sub text-brand-muted">${hourLabel(h)} – ${hourLabel(h+1)}</div>`;
+        if (isBooked) bookedCount++; else pendingCount++;
+        cell.addEventListener('click', () => handleSlotDetail(slot, court, h));
+      }
+
+      rowDiv.appendChild(cell);
+    }
+
+    gridBody.appendChild(rowDiv);
+  }
+
+  // Update quick-stats
+  const el = (id) => document.getElementById(id);
+  if (el('cal-stat-booked'))  el('cal-stat-booked').textContent  = bookedCount;
+  if (el('cal-stat-avail'))   el('cal-stat-avail').textContent   = availCount;
+  if (el('cal-stat-pending')) el('cal-stat-pending').textContent = pendingCount;
+
+  // Scroll to current hour on today
+  if (isToday) {
+    setTimeout(() => {
+      const rows = gridBody.querySelectorAll('.cal-row-current');
+      if (rows.length) rows[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
+  }
+}
+
+// Click handlers (stubs — wire to modal/API in Phase 4)
+function handleSlotClick(court, hour, dateStr) {
+  showToast(`➕ New booking: Court ${court} at ${hourLabel(hour)} on ${dateStr}`);
+}
+function handleSlotDetail(slot, court, hour) {
+  const statusLabel = slot.status === 'booked' ? '✅ Booked' : '⏳ Pending';
+  showToast(`${statusLabel} — ${slot.name} · Court ${court} · ${hourLabel(hour)}`);
+}
