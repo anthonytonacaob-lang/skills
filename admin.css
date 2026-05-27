@@ -1,0 +1,109 @@
+/* ================================================
+   SKILLS Gym · Admin Portal — Custom Styles
+   ================================================ */
+
+/* ── Fonts & Base ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background-color: #0b0f1a;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #1e2d45; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #2a3f5f; }
+
+/* ── Sidebar Nav Links ── */
+.nav-link {
+  color: #4b6280;
+}
+.nav-link:hover {
+  background: rgba(0, 123, 255, 0.08);
+  color: #cdd9ea;
+}
+.nav-link.active {
+  background: linear-gradient(135deg, rgba(0,123,255,0.18) 0%, rgba(0,210,255,0.10) 100%);
+  color: #00d2ff;
+  border-left: 3px solid #007bff;
+  padding-left: calc(0.75rem - 3px);
+}
+
+/* ── Badge Orange ── */
+.badge-orange {
+  background: linear-gradient(135deg, #ff8c00, #e65100);
+  color: #fff;
+}
+
+/* ── Stat Card Hover ── */
+.stat-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* ── Status Pills ── */
+.pill-confirmed {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+.pill-pending {
+  background: rgba(255, 140, 0, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(255, 140, 0, 0.2);
+}
+.pill-cancelled {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* ── Btn Orange ── */
+.btn-orange {
+  background: linear-gradient(135deg, #ff8c00 0%, #e65100 100%);
+  box-shadow: 0 0 18px rgba(255, 140, 0, 0.3);
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn-orange:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* ── Progress Bars ── */
+.progress-bar {
+  height: 6px;
+  border-radius: 9999px;
+  background: #1e2d45;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 1s ease;
+}
+
+/* ── Activity Icon ── */
+.activity-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Page-load fade-in ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 0.4s ease forwards;
+}
+
+/* ── Mobile sidebar backdrop fix ── */
+#sidebar { will-change: transform; }

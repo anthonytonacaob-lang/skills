@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SKILLS Gym · Admin Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/admin.css"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Bebas Neue', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              blue1: '#007bff',
+              blue2: '#00d2ff',
+              orange1: '#ff8c00',
+              orange2: '#e65100',
+              dark: '#0b0f1a',
+              surface: '#111827',
+              card: '#1a2235',
+              border: '#1e2d45',
+              muted: '#4b6280',
+              text: '#cdd9ea',
+            }
+          },
+          backgroundImage: {
+            'grad-blue': 'linear-gradient(135deg, #007bff 0%, #00d2ff 100%)',
+            'grad-orange': 'linear-gradient(135deg, #ff8c00 0%, #e65100 100%)',
+            'grad-dark': 'linear-gradient(180deg, #0b0f1a 0%, #111827 100%)',
+            'grad-card': 'linear-gradient(145deg, #1a2235 0%, #111827 100%)',
+          },
+          boxShadow: {
+            'blue-glow': '0 0 20px rgba(0, 123, 255, 0.25)',
+            'orange-glow': '0 0 20px rgba(255, 140, 0, 0.25)',
+            'card': '0 4px 24px rgba(0,0,0,0.4)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-brand-dark font-body text-brand-text min-h-screen flex overflow-hidden">
+
+  <!-- ════════════════════════════════════════════
+       SIDEBAR
+  ═════════════════════════════════════════════ -->
+  <aside id="sidebar"
+    class="fixed inset-y-0 left-0 z-40 w-64 flex flex-col bg-brand-surface border-r border-brand-border
+           transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-3 px-6 py-5 border-b border-brand-border shrink-0">
+      <div class="w-9 h-9 rounded-lg bg-grad-blue flex items-center justify-center shadow-blue-glow">
+        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+        </svg>
+      </div>
+      <div>
+        <span class="font-display text-white text-xl tracking-wider leading-none">SKILLS</span>
+        <p class="text-[10px] text-brand-muted font-medium tracking-widest uppercase leading-none mt-0.5">Gym Rental</p>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+      <p class="text-[10px] font-semibold uppercase tracking-widest text-brand-muted px-3 mb-3">Main Menu</p>
+
+      <a href="index.html" class="nav-link active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200">
+        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        Dashboard
+      </a>
+
+      <a href="pages/bookings.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200">
+        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        Bookings
+        <span class="ml-auto badge-orange text-xs font-semibold px-2 py-0.5 rounded-full">5</span>
+      </a>
+
+      <a href="pages/inventory.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200">
+        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+        Inventory
+      </a>
+
+      <a href="pages/reports.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200">
+        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        Reports
+      </a>
+
+      <div class="pt-4 mt-4 border-t border-brand-border">
+        <p class="text-[10px] font-semibold uppercase tracking-widest text-brand-muted px-3 mb-3">System</p>
+        <a href="pages/settings.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200">
+          <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          Settings
+        </a>
+      </div>
+    </nav>
+
+    <!-- Admin Profile Footer -->
+    <div class="px-4 py-4 border-t border-brand-border shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-grad-orange flex items-center justify-center text-white font-bold text-sm shadow-orange-glow shrink-0">
+          JR
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-semibold text-white truncate">Jess Reyes</p>
+          <p class="text-xs text-brand-muted truncate">Super Admin</p>
+        </div>
+        <button class="ml-auto text-brand-muted hover:text-white transition-colors shrink-0" title="Logout">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Overlay (mobile) -->
+  <div id="overlay" class="fixed inset-0 bg-black/60 z-30 hidden md:hidden" onclick="toggleSidebar()"></div>
+
+  <!-- ════════════════════════════════════════════
+       MAIN AREA
+  ═════════════════════════════════════════════ -->
+  <div class="flex-1 flex flex-col min-h-screen md:ml-64 overflow-hidden">
+
+    <!-- TOP NAV -->
+    <header class="sticky top-0 z-20 bg-brand-surface/80 backdrop-blur-md border-b border-brand-border px-4 md:px-6 py-3.5 flex items-center gap-4 shrink-0">
+      <!-- Hamburger -->
+      <button onclick="toggleSidebar()" class="md:hidden text-brand-muted hover:text-white transition-colors p-1">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+
+      <!-- Page Title -->
+      <div class="mr-auto">
+        <h1 class="text-base font-semibold text-white leading-none">Dashboard</h1>
+        <p class="text-xs text-brand-muted mt-0.5" id="current-date">Loading...</p>
+      </div>
+
+      <!-- Search -->
+      <div class="hidden sm:flex items-center gap-2 bg-brand-card border border-brand-border rounded-lg px-3 py-2 text-sm text-brand-muted w-48 focus-within:border-brand-blue1 transition-colors">
+        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input type="text" placeholder="Search..." class="bg-transparent outline-none w-full text-brand-text placeholder-brand-muted text-sm"/>
+      </div>
+
+      <!-- Notifications -->
+      <button class="relative p-2 text-brand-muted hover:text-white transition-colors rounded-lg hover:bg-brand-card">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+        </svg>
+        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-orange1 rounded-full ring-2 ring-brand-surface"></span>
+      </button>
+
+      <!-- Avatar -->
+      <div class="w-8 h-8 rounded-full bg-grad-orange flex items-center justify-center text-white font-bold text-xs shadow-orange-glow cursor-pointer">
+        JR
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+
+      <!-- ── Welcome Banner ── -->
+      <div class="relative rounded-2xl overflow-hidden p-6 md:p-8 bg-grad-blue shadow-blue-glow">
+        <div class="absolute inset-0 opacity-10"
+          style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px)"></div>
+        <div class="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <p class="text-white/70 text-sm font-medium uppercase tracking-widest">Good morning,</p>
+            <h2 class="font-display text-white text-3xl md:text-4xl tracking-wide mt-1">JESS REYES</h2>
+            <p class="text-white/70 text-sm mt-1">Here's what's happening at SKILLS Gym today.</p>
+          </div>
+          <button onclick="location.href='pages/bookings.html'"
+            class="shrink-0 flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white font-semibold text-sm px-5 py-2.5 rounded-xl border border-white/20 transition-all duration-200 backdrop-blur-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+            </svg>
+            New Booking
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Stats Grid ── -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <!-- Total Bookings -->
+        <div class="stat-card rounded-2xl p-5 border border-brand-border bg-grad-card shadow-card flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted">Total Bookings</p>
+            <div class="w-8 h-8 rounded-lg bg-grad-blue/20 flex items-center justify-center">
+              <svg class="w-4 h-4 text-brand-blue2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <p class="text-3xl font-display text-white tracking-wider" data-count="247">247</p>
+            <p class="text-xs text-green-400 mt-1 flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+              +12% from last month
+            </p>
+          </div>
+        </div>
+
+        <!-- Pending Requests -->
+        <div class="stat-card rounded-2xl p-5 border border-brand-orange1/30 bg-grad-card shadow-card flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted">Pending</p>
+            <div class="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
+              <svg class="w-4 h-4 text-brand-orange1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <p class="text-3xl font-display text-white tracking-wider">5</p>
+            <p class="text-xs text-brand-orange1 mt-1">Awaiting approval</p>
+          </div>
+        </div>
+
+        <!-- Active Equipment -->
+        <div class="stat-card rounded-2xl p-5 border border-brand-border bg-grad-card shadow-card flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted">Active Equipment</p>
+            <div class="w-8 h-8 rounded-lg bg-grad-blue/20 flex items-center justify-center">
+              <svg class="w-4 h-4 text-brand-blue2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <p class="text-3xl font-display text-white tracking-wider">38</p>
+            <p class="text-xs text-brand-muted mt-1">of 42 total units</p>
+          </div>
+        </div>
+
+        <!-- Revenue -->
+        <div class="stat-card rounded-2xl p-5 border border-brand-border bg-grad-card shadow-card flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted">Monthly Revenue</p>
+            <div class="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+              <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <p class="text-3xl font-display text-white tracking-wider">₱48.2K</p>
+            <p class="text-xs text-green-400 mt-1 flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+              +8.4% vs last month
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Two-column: Recent Bookings + Quick Actions ── -->
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+
+        <!-- Recent Bookings Table -->
+        <div class="xl:col-span-2 rounded-2xl border border-brand-border bg-grad-card shadow-card overflow-hidden">
+          <div class="flex items-center justify-between px-5 py-4 border-b border-brand-border">
+            <h3 class="font-semibold text-white text-sm">Recent Bookings</h3>
+            <a href="pages/bookings.html" class="text-xs text-brand-blue2 hover:underline font-medium">View all →</a>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-[11px] uppercase tracking-widest text-brand-muted border-b border-brand-border">
+                  <th class="text-left px-5 py-3 font-semibold">Customer</th>
+                  <th class="text-left px-5 py-3 font-semibold hidden sm:table-cell">Equipment</th>
+                  <th class="text-left px-5 py-3 font-semibold hidden md:table-cell">Date</th>
+                  <th class="text-left px-5 py-3 font-semibold">Status</th>
+                </tr>
+              </thead>
+              <tbody id="bookings-table" class="divide-y divide-brand-border">
+                <!-- JS-populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="flex flex-col gap-4">
+
+          <!-- Pending Approvals -->
+          <div class="rounded-2xl border border-brand-orange1/30 bg-grad-card shadow-card overflow-hidden">
+            <div class="flex items-center justify-between px-5 py-4 border-b border-brand-orange1/20">
+              <h3 class="font-semibold text-white text-sm flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-brand-orange1 animate-pulse"></span>
+                Pending Approvals
+              </h3>
+              <span class="text-xs font-bold text-brand-orange1 bg-orange-500/10 px-2 py-0.5 rounded-full">5</span>
+            </div>
+            <ul id="pending-list" class="divide-y divide-brand-border">
+              <!-- JS-populated -->
+            </ul>
+          </div>
+
+          <!-- Equipment Status -->
+          <div class="rounded-2xl border border-brand-border bg-grad-card shadow-card p-5">
+            <h3 class="font-semibold text-white text-sm mb-4">Equipment Status</h3>
+            <div class="space-y-3" id="equip-status">
+              <!-- JS-populated -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Activity Feed ── -->
+      <div class="rounded-2xl border border-brand-border bg-grad-card shadow-card">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-brand-border">
+          <h3 class="font-semibold text-white text-sm">Recent Activity</h3>
+          <span class="text-xs text-brand-muted">Today</span>
+        </div>
+        <ul id="activity-feed" class="divide-y divide-brand-border px-5">
+          <!-- JS-populated -->
+        </ul>
+      </div>
+
+    </main>
+  </div><!-- /main area -->
+
+  <script src="../assets/js/admin.js"></script>
+</body>
+</html>
